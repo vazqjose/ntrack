@@ -9,7 +9,10 @@
         <div v-if="sucessMsg" class="alert alert-success fade show" role="alert">
               <strong>{{ sucessMsg}}</strong> 
         </div>
+        
         <form class="myform" @submit.prevent="checkForm">
+            <label for="userID" class="control-label">{{formData }}</label>
+            <hr>
             <div class="form-group">
                 <label for="userID" class="control-label">Post user ID</label>
                 <input type="text" id="userID" class="form-control" v-model="formData.userID"> 
@@ -28,7 +31,7 @@
 </template>
 
 <script>
-    import axios from 'axios'
+    import axios from 'axios' 
     export default {
         name: 'createPost',
         data() {
@@ -47,9 +50,11 @@
         methods: {
             checkForm: function() {
                 if (this.formData.userID && this.formData.title && this.formData.body) {
-                    this.createPost();     
+                    this.createPost();
+                    this.errors = [];
                     return;           
                 }
+                this.sucessMsg = '';
                 this.errors = [];
                 if (!this.formData.userID) {
                     this.errors.push('User ID required');

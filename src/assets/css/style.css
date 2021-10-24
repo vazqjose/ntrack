@@ -183,10 +183,23 @@ a.openPopup i
     margin-right: 10px;
 }
 
+.tableheading
+{
+    background-color: #a0670ccc !important;
+    font-weight: bold;
+    color:white;
+}
+
 .table-striped tr:nth-child(even)
 {
     background-color:rgba(255,255,255,0.5);
 }
+
+.table-striped tr:hover{
+    
+    font-weight: bold;
+}
+
 .mybtn
 {
     font-weight: bold !important;

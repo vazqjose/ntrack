@@ -2,17 +2,19 @@
 <div>
     <div class="navbar navbar-expand-lg clearwhite">
     <div class="container">
-        <a class="navbar-brand textwhite" href="#">
+        <router-link to='/' class="navbar-brand textwhite">
           <p class='brandname'>NTrack</p>
           <p class="tagline">This is our awesome tagline</p>
-        </a>
+        </router-link>
+        
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <i class="fas fa-sliders-h"></i>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li><a class="btn btn-outline-success me-2 newticket" href="#">
-                <i class="fas fa-clipboard-check"></i> Create new ticket</a>
+              <li>
+                <router-link to='/postList' class="btn btn-outline-success me-2 newticket">
+                <i class="fas fa-clipboard-check"></i> View sample list API</router-link>
               </li>
         </ul>
         <ul class="nav navbar-nav">
@@ -56,5 +58,7 @@
 </script>
 
 <style scoped>
-
+    .navbar {
+      margin-bottom: 3%;
+    }
 </style>

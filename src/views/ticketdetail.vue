@@ -1,5 +1,5 @@
 <template>
-<div class="container" style='margin-top:3%'>
+<div id="showTicket" class="container">
 
     <fieldset class="myform" style="margin:auto;">
             <legend><span>Ticket details</span></legend>
@@ -119,52 +119,7 @@
 </div>
 </template>
 <script>
-export default {
-    name: 'ticketDetail',
-    data() {
-        return {
-            success: false,
-            error: false,
-            ticketNumber: '50041',
-            createdBy: 'Andres Morales',
-            dateCreated: '12/31/69 6:00 PM',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac mauris pretium, ultricies eros et, tempor urna',
-            serviceType: 'Diagnostic checkup',
-            clientName: 'Bruce Wayne',
-            clientPhone: '788-652-8977',
-            clientEmail: 'me@somewhere.com',
-            updates: [
-                {
-                    status: 'Open',
-                    setBy: 'Andres Morales',
-                    dateUpdated: '12/31/20 6:00 PM',                            
-                },
-                {
-                    status: 'In progress',
-                    setBy: 'Andres Morales',
-                    dateUpdated: '05/1/21 3:20 PM',                            
-                },
-                {
-                    status: 'Ready',
-                    setBy: 'Andres Morales',
-                    dateUpdated: '05/3/21 6:20 PM',                            
-                },
-            ], // status object object
-            comments: [
-                {
-                    commentBy: 'Andres Morales',
-                    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac mauris pretium, ultricies eros et, tempor urna',
-                    dateAdded: '12/31/69 6:00 PM',
-                },
-                {
-                    commentBy: 'Jose Vazquez',
-                    comment: 'ris pretium, ultricies eros et, tempor urna',
-                    dateAdded: '12/31/69 6:00 PM',
-                }
-            ] // comments object
-        }
-    }
-}
+
 
 </script>
 
