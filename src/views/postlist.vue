@@ -2,7 +2,7 @@
     <div class="container">
         <createPost />
         <div v-if="errorMsg" class="alert alert-danger fade show" role="alert">
-              <strong>{{ errorMsg}}</strong> 
+              <strong>{{ errorMsg }}</strong> 
         </div>
         
         <div v-for="post in posts" :key="post.id">

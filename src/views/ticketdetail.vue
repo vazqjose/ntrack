@@ -2,19 +2,21 @@
 <div id="showTicket" class="container">
 
     <fieldset class="myform" style="margin:auto;">
-            <legend><span>Ticket details</span></legend>
+            <legend><span>Ticket details ({{ ticket.client_id.name }} {{ ticket.client_id.last_name }})</span></legend>
             <div class="divider"></div>
              <!-- ALERTS SECTION START ------------------------------------------>
             
-            <div v-if="error" class="alert alert-danger alert-dismissible fade show" role="alert">
-              There wass an <strong>error</strong> saving this data, please try again!
+            <div v-if="errorMsg" class="alert alert-danger alert-dismissible fade show" role="alert">
+              {{ errorMsg }}
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            <div v-if="success" class="alert alert-success alert-dismissible fade show" role="alert">
-              Ticket updated <strong>successfully!</strong>
+            <div v-if="successMsg" class="alert alert-success alert-dismissible fade show" role="alert">
+              {{ successMsg }}
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            <!-- ALERTS SECTION END --------------------------------------->
+
+
+      <!----------------------- GENERAL DETAILS --------------------------------------->
 
         <form method="post" enctype="multipart/form-data" id="myform" action="">                            
           
@@ -22,17 +24,18 @@
                 <div class="col-md-6">
                   <h3 class="clearwhite"><i class="fas fa-info-circle"></i> General Details</h3>
                   <div class="form-group">
-                    <p class="control-label clearblack"><strong>Ticket number:</strong> {{ticketNumber}}</p>
-                    <p class="control-label clearblack"><strong>Created by:</strong> {{createdBy}} 	{{dateCreated}}</p>
-                    <p class="control-label clearblack"><strong>Description:</strong> {{description}}</p>
-                    <p class="control-label clearblack"><strong>Type of service:</strong> {{serviceType}}</p>
+                    <p class="control-label clearblack"><strong>Ticket number:</strong> {{ printTicketNumber(ticket._id.$oid) }}</p>
+                    <p class="control-label clearblack"><strong>Created by:</strong> {{ ticket.created_by.name }} {{ ticket.created_by.last_name }}</p>
+                    <p class="control-label clearblack"><strong>Description:</strong> {{ ticket.description }}</p>
+                    <p class="control-label clearblack"><strong>Status: </strong> {{ ticket.status.toUpperCase() }}</p>
                   
-                    <p class="control-label clearblack"><strong>Client name:</strong> {{clientName}}</p>
-                    <p class="control-label clearblack"><strong>Client phone:</strong> {{clientPhone}}</p>
-                    <p class="control-label clearblack"><strong>Client email:</strong> {{clientEmail}}</p>                                         
+                    <p class="control-label clearblack"><strong>Client name:</strong> {{ ticket.client_id.name }} {{ ticket.client_id.last_name }}</p>
+                    <p class="control-label clearblack"><strong>Client phone:</strong> {{ ticket.client_id.phone }}</p>
+                    <p class="control-label clearblack"><strong>Client email:</strong> {{ ticket.client_id.email }}</p>                                      
                   </div>
-                  <p>&nbsp;</p>
-
+                  
+                  
+                <!-------------------------------------- STATUS UPDATE BLOCK ----------------------------------->
                 <div class="form-group">
                   <h3 class="clearwhite"><i class="fas fa-history"></i> Status update history </h3>
                   <table class="mytable table table-responsive clearblack">
@@ -41,33 +44,42 @@
                         <th>Employee name</th>
                         <th>Date set</th>
                     </tr>
-                    <tr v-for="updateLine in updates" :key="updateLine.dateSet">  
-                        <td>{{updateLine.status}}</td>
-                        <td>{{updateLine.setBy}}</td>
-                        <td>{{updateLine.dateUpdated}}</td> 
+                    <tr v-for="statusline in ticket.status_updates" :key="statusline.status">
+                        <td>{{ statusline.status_change }}</td>
+                        <td>{{ statusline.created_by.name }} {{ statusline.created_by.last_name }}</td>
+                        <td>{{ statusline.created.$date }}</td> 
                     </tr>
                   </table>
+<!--                  
                   <div class="row text-end"><a href='#' class='openPopup'  data-bs-toggle="modal" data-bs-target="#modalSetStatus"><i class="fas fa-plus-circle"></i>Set new status</a></div>          
+-->                  
                 </div>
               </div>
                 <div class="col-md-6" style='padding-left:40px'>
-                  <h3 class="clearwhite"><i class="far fa-comments"></i> Comments Log (3)</h3>
-                 
-                  <div class="form-group" v-for="line in comments" :key="line.dateAdded">
-                    <label class="control-label "><u>Comment added by <strong>{{line.commentBy}}</strong> on {{line.dateAdded}}</u></label>
-                    <label class="control-label"><li>{{line.comment}}</li></label>                      
+                  <h3 class="clearwhite"><i class="far fa-comments"></i> Comments Log</h3>
+
+                 <!------------------------------------- COMMENTS BLOCK ------------------------------->
+                  <div v-for="commline in ticket.status_updates" :key="commline.created.$date" class="form-group">
+                    <label class="control-label">Comment added by <strong>{{ commline.created_by.name }} {{ commline.created_by.last_name }}</strong> on {{ commline.created.$date }}</label>
+                    <ul class="control-label">
+                          <li v-if="commline.comment">{{ commline.comment }}</li>
+                          <li v-else><i>No comment added</i></li>                  
+                    </ul>
+                    <div class="divider"></div>
                   </div>
-               
+<!--               
                     <div class="row text-end">
                     <a href='#' type='button' class='openPopup' data-bs-toggle="modal" data-bs-target="#modalAddComment">
                     <i class="fas fa-comment-medical"></i>Add new comment</a>
                     </div>
+-->                    
                 </div>
               </div>          
           </form>
           </fieldset>
 
           <!-- Modal ADD COMMENT -->
+<!--          
             <div class="modal fade" id="modalAddComment" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content mymodal">
@@ -87,8 +99,9 @@
                 </div>
             </div>
             </div>
-
+-->
             <!-- Modal CHANGE STATUS -->
+<!--            
             <div class="modal fade" id="modalSetStatus" tabindex="-1" aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content mymodal">
@@ -101,9 +114,6 @@
                         <select id="selStatus" name="selStatus" class="form-select">
                           <option value="" selected="selected">--Select a new status to set--</option>                                                    
                           <option value="1">Service type sample</option>
-                          <option value="2">Service type sample</option>
-                          <option value="3">Service type sample</option>
-                          <option value="3">Service type sample</option>
                         </select>              
                     </div>
                   </div>
@@ -114,12 +124,47 @@
                 </div>
               </div>
             </div>
-
+-->
 
 </div>
 </template>
 <script>
+  import axios from 'axios';
+  export default {
+    props: ['ticketID'],
+    methods: {
+        printTicketNumber(id)
+            {
+                this.ticketNumber = '';
+                this.i = 0;                
 
+                while (this.i < 7)
+                {
+                  this.ticketNumber += id[this.i];
+                  this.i++;
+                }
+                return this.ticketNumber;
+            }
+    },
+    data() {
+      return {
+        ticket: [],
+        errorMsg: '',
+        successMsg: ''
+      }
+    },
+    created() {
+        axios.get('https://2ktpylu8p5.execute-api.us-east-2.amazonaws.com/dev/api/v1/ticket_full/6170be1ace938dab7b685231')
+        .then((response) => {
+            console.log(response.data);
+            this.ticket = response.data;
+        })
+        .catch((error) => {
+            console.log(error),
+            this.errorMsg = 'There was an error loading this ticket. Try again!'
+        })
+    }
+  }
 
 </script>
 

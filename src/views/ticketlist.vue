@@ -1,8 +1,7 @@
 <template>
   <div class="container">
-
-
     <template v-if="tickets.length > 0">
+      <h5 class="text-center clearblack">{{ tickets.length }} tickets in total</h5>
 <!--
     <div class="dropdown text-end filterMenu">
       <a
@@ -33,8 +32,7 @@
       </tr>
       
       <tr
-        v-for="ticket in tickets" :key="ticket._id">
-        
+        v-for="ticket in tickets" :key="ticket._id">        
         <td>
 
           <router-link :to="{ name: 'ticketDetail', params: { ticketID: ticket._id.$oid } }" class="btn btn-light whitehover">
