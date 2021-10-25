@@ -13,7 +13,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li>
-                <router-link to='/postList' class="btn btn-outline-success me-2 newticket">
+                <router-link to='/posts' class="btn btn-outline-success me-2 newticket">
                 <i class="fas fa-clipboard-check"></i> View sample list API</router-link>
               </li>
         </ul>

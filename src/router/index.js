@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import ticketList from '../views/ticketlist.vue'
 import ticketDetail from '../views/ticketdetail.vue'
 import postList from '../views/postlist.vue'
-import singleBlog from '@/components/singleblog.vue'
+import singleBlog from '../views/singleblog.vue'
 
 
 const routes = [    
@@ -12,19 +12,20 @@ const routes = [
         component: ticketList
     },
     {
-        path: '/ticketDetail/:ticketID',
-        name: 'TicketDetail',
+        path: '/ticketdetail/:ticketID',
+        name: 'ticketDetail',
         component: ticketDetail
     },
     {
-        path: '/postList',
+        path: '/posts',
         name: 'postList',
         component: postList
     },
     {
-        path: '/blog/:id',
+        path: '/posts/:id',
         name: 'singleBlog',
-        component: singleBlog
+        component: singleBlog,
+        props: true
     }
 ]
 

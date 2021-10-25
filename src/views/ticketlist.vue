@@ -36,8 +36,10 @@
         v-for="ticket in tickets" :key="ticket._id">
         
         <td>
-          <router-link to='/ticketDetail' class="btn btn-light whitehover"
-            ><i class="far fa-file-alt"></i></router-link>
+
+          <router-link :to="{ name: 'ticketDetail', params: { ticketID: ticket._id.$oid } }" class="btn btn-light whitehover">
+            <i class="far fa-file-alt"></i>
+          </router-link>
         </td>
         <td>{{ printTicketNumber(ticket._id.$oid) }}</td>
         <td>{{ ticket.client_id.name}} {{ ticket.client_id.last_name}}</td>
@@ -77,7 +79,7 @@
         },
         methods: {
             listTickets() {
-                axios.get('http://192.168.1.130:5000/api/v1/ticketsfull')
+                axios.get('https://2ktpylu8p5.execute-api.us-east-2.amazonaws.com/dev/api/v1/ticketsfull')
                 .then((response) => {
                     console.log(response.data)
                     this.tickets = response.data

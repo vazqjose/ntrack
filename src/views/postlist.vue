@@ -4,9 +4,11 @@
         <div v-if="errorMsg" class="alert alert-danger fade show" role="alert">
               <strong>{{ errorMsg}}</strong> 
         </div>
-              
+        
         <div v-for="post in posts" :key="post.id">
-            <router-link to='/postList'><h3>{{post.id}}. {{post.title}}</h3></router-link>
+            <router-link :to="{ name: 'singleBlog', params: { id: post.id } }">
+                <h3>{{post.id}}. {{post.title}}</h3>
+            </router-link>
             <p>{{post.body}}</p>
             <hr>
         </div> 
