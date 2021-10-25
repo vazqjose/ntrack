@@ -14,7 +14,8 @@ const routes = [
     {
         path: '/ticketdetail/:ticketID',
         name: 'ticketDetail',
-        component: ticketDetail
+        component: ticketDetail,
+        props: true
     },
     {
         path: '/posts',

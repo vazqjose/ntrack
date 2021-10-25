@@ -4,6 +4,8 @@
     <fieldset class="myform" style="margin:auto;">
             <legend><span>Ticket details ({{ ticket.client_id.name }} {{ ticket.client_id.last_name }})</span></legend>
             <div class="divider"></div>
+            
+            
              <!-- ALERTS SECTION START ------------------------------------------>
             
             <div v-if="errorMsg" class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -52,12 +54,12 @@
                       </template>
                     </tr>
                   </table>
-<!--                  
+                 
                   <div class="row text-end">
                     <a href='#' class='openPopup'  data-bs-toggle="modal" data-bs-target="#modalSetStatus">
                         <i class="fas fa-plus-circle"></i>Set new status</a>
                   </div>          
--->                  
+                
                 </div>
               </div>
                 <div class="col-md-6" style='padding-left:40px'>
@@ -72,19 +74,19 @@
                         <p class="comment">{{ commline.comment }}</p>                        
                       </li>
                   </ul>
-<!--               
-                    <div class="row text-end">
+             
+                    <div class="row text-end ">
                     <a href='#' type='button' class='openPopup' data-bs-toggle="modal" data-bs-target="#modalAddComment">
                     <i class="fas fa-comment-medical"></i>Add new comment</a>
                     </div>
--->                    
+                  
                 </div>
               </div>          
           </form>
           </fieldset>
 
           <!-- Modal ADD COMMENT -->
-<!--          
+          
             <div class="modal fade" id="modalAddComment" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content mymodal">
@@ -104,9 +106,9 @@
                 </div>
             </div>
             </div>
--->
+
             <!-- Modal CHANGE STATUS -->
-<!--            
+          
             <div class="modal fade" id="modalSetStatus" tabindex="-1" aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content mymodal">
@@ -129,7 +131,7 @@
                 </div>
               </div>
             </div>
--->
+
 
 </div>
 </template>
@@ -159,7 +161,8 @@
       }
     },
     created() {
-        axios.get('https://2ktpylu8p5.execute-api.us-east-2.amazonaws.com/dev/api/v1/ticket_full/6170be1ace938dab7b685231')
+        //axios.get('https://2ktpylu8p5.execute-api.us-east-2.amazonaws.com/dev/api/v1/ticket_full/6170be1ace938dab7b685231')
+        axios.get('https://2ktpylu8p5.execute-api.us-east-2.amazonaws.com/dev/api/v1/ticket_full/' + this.ticketID)
         .then((response) => {
             console.log(response.data);
             this.ticket = response.data;
@@ -170,6 +173,21 @@
         })
     }
   }
+  /*
+
+      status_updates: [
+        {
+        comment: '',
+        created: '',
+        created_by: {
+          _id: '',
+          name: '',
+          last_name: ''
+          }
+        }
+      ]
+
+  */
 
 </script>
 
@@ -190,8 +208,13 @@
 
   ul.commentlist li
   {
-    padding: 16px;
+    padding: 10px;
     border-bottom: 1px dotted #666;
+  }
+
+  ul.commentlist li:last-child
+  {
+    border: 0;
   }
 
  ul.commentlist li > p

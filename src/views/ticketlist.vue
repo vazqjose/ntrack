@@ -48,9 +48,9 @@
     </table>
     </template>
     <template v-else>
-        <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
-              <strong>Error </strong>retrieving list
-            </div>
+        <div class="alert alert-info fade show text-center" role="alert">
+             <i class="fas fa-hourglass-half"></i> Please wait, retrieving list
+        </div>
     </template>
 
   </div>

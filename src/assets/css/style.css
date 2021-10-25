@@ -235,6 +235,11 @@ a.openPopup i
     margin-bottom: 30px !important;
 }
 
+.mytable th 
+  {
+    padding:20px 0 20px 10px;
+  }
+
 table tr
 {
     border:0 !important;
@@ -243,7 +248,7 @@ table tr
 .mytable td
 {
     vertical-align: top !important;
-    padding:10px 0 10px !important;
+    padding:10px;
 }
 
 .mytable tr
