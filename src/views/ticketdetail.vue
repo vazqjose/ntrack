@@ -37,7 +37,7 @@
                   
                 <!-------------------------------------- STATUS UPDATE BLOCK ----------------------------------->
                 <div class="form-group">
-                  <h3 class="clearwhite"><i class="fas fa-history"></i> Status update history </h3>
+                  <h3 class="clearwhite"><i class="fas fa-history"></i> Status update history ( {{ ticket.status_updates.length }})</h3>
                   <table class="mytable table table-responsive clearblack">
                     <tr>
                         <th>Status</th>
@@ -45,28 +45,33 @@
                         <th>Date set</th>
                     </tr>
                     <tr v-for="statusline in ticket.status_updates" :key="statusline.status">
+                      <template v-if="statusline.status_change">
                         <td>{{ statusline.status_change }}</td>
                         <td>{{ statusline.created_by.name }} {{ statusline.created_by.last_name }}</td>
-                        <td>{{ statusline.created.$date }}</td> 
+                        <td>{{ statusline.created.$date }}</td>
+                      </template>
                     </tr>
                   </table>
 <!--                  
-                  <div class="row text-end"><a href='#' class='openPopup'  data-bs-toggle="modal" data-bs-target="#modalSetStatus"><i class="fas fa-plus-circle"></i>Set new status</a></div>          
+                  <div class="row text-end">
+                    <a href='#' class='openPopup'  data-bs-toggle="modal" data-bs-target="#modalSetStatus">
+                        <i class="fas fa-plus-circle"></i>Set new status</a>
+                  </div>          
 -->                  
                 </div>
               </div>
                 <div class="col-md-6" style='padding-left:40px'>
-                  <h3 class="clearwhite"><i class="far fa-comments"></i> Comments Log</h3>
+                  <h3 class="clearwhite"><i class="far fa-comments"></i> Comments Log ({{ ticket.status_updates.length }})</h3>
 
                  <!------------------------------------- COMMENTS BLOCK ------------------------------->
-                  <div v-for="commline in ticket.status_updates" :key="commline.created.$date" class="form-group">
-                    <label class="control-label">Comment added by <strong>{{ commline.created_by.name }} {{ commline.created_by.last_name }}</strong> on {{ commline.created.$date }}</label>
-                    <ul class="control-label">
-                          <li v-if="commline.comment">{{ commline.comment }}</li>
-                          <li v-else><i>No comment added</i></li>                  
-                    </ul>
-                    <div class="divider"></div>
-                  </div>
+                  <ul class="commentlist">
+                    <li class="clearblack control-label" v-for="commline in ticket.status_updates" :key="commline.created.$date">                                                
+                      <p class="commentdesc clearblack">
+                        <strong>{{ commline.created_by.name }} {{ commline.created_by.last_name }}</strong> on {{ commline.created.$date }}
+                      </p>
+                        <p class="comment">{{ commline.comment }}</p>                        
+                      </li>
+                  </ul>
 <!--               
                     <div class="row text-end">
                     <a href='#' type='button' class='openPopup' data-bs-toggle="modal" data-bs-target="#modalAddComment">
@@ -169,5 +174,35 @@
 </script>
 
 <style scoped>
+  .commentdesc {
+    font-size: 12px;
+    padding:10px;
+  }
+
+  ul.commentlist
+  {
+    list-style: none;
+    list-style-image: none;
+    list-style-type: none;
+    margin:0 !important;
+    padding-inline-start: 0 !important;
+  }
+
+  ul.commentlist li
+  {
+    padding: 16px;
+    border-bottom: 1px dotted #666;
+  }
+
+ ul.commentlist li > p
+  {
+    margin: 0;
+  }
+
+   ul.commentlist li > p.comment
+  {
+    padding: 10px;
+  }
+
 
 </style>

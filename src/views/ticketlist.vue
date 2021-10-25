@@ -29,8 +29,7 @@
         <th width="10%">Status</th>
         <th>Description of issue</th>
         <th width="15%">Last Updated</th>
-      </tr>
-      
+      </tr>      
       <tr
         v-for="ticket in tickets" :key="ticket._id">        
         <td>
