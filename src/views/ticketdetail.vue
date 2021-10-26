@@ -6,7 +6,7 @@
             <div class="divider"></div>
             
             
-             <!-- ALERTS SECTION START ------------------------------------------>
+              <!-- ALERTS SECTION START ------------------------------------------>
             
             <div v-if="errorMsg" class="alert alert-danger alert-dismissible fade show" role="alert">
               {{ errorMsg }}
@@ -18,7 +18,7 @@
             </div>
 
 
-      <!----------------------- GENERAL DETAILS --------------------------------------->
+              <!----------------------- GENERAL DETAILS --------------------------------------->
 
         <form method="post" enctype="multipart/form-data" id="myform" action="">                            
           
@@ -71,7 +71,7 @@
                       <p class="commentdesc clearblack">
                         <strong>{{ commline.created_by.name }} {{ commline.created_by.last_name }}</strong> on {{ commline.created.$date }}
                       </p>
-                        <p class="comment">{{ commline.comment }}</p>                        
+                        <p class="comment">{{ commline.comment }}</p>                     
                       </li>
                   </ul>
              
@@ -85,27 +85,7 @@
           </form>
           </fieldset>
 
-          <!-- Modal ADD COMMENT -->
-          
-            <div class="modal fade" id="modalAddComment" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content mymodal">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add a new comment</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                        <div class="form-group">
-                        <textarea id="txtNewComment" type="text" name="txtNewComment" class="form-control" rows='5' line placeholder="Write down your comment here"/>
-                        </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="far fa-times-circle"></i> Close</button>
-                    <button id="btnAddComment" type="button" class="btn btn-dark" data-bs-dismiss="modal"><i class="fas fa-comment-medical"></i> OK</button>
-                </div>
-                </div>
-            </div>
-            </div>
+          <addcomment />
 
             <!-- Modal CHANGE STATUS -->
           
@@ -137,7 +117,9 @@
 </template>
 <script>
   import axios from 'axios';
+import addcomment from '../components/addcomment.vue';
   export default {
+  components: { addcomment },
     props: ['ticketID'],
     methods: {
         printTicketNumber(id)
@@ -160,6 +142,7 @@
         successMsg: ''
       }
     },
+    
     created() {
         //axios.get('https://2ktpylu8p5.execute-api.us-east-2.amazonaws.com/dev/api/v1/ticket_full/6170be1ace938dab7b685231')
         axios.get('https://2ktpylu8p5.execute-api.us-east-2.amazonaws.com/dev/api/v1/ticket_full/' + this.ticketID)
@@ -195,6 +178,7 @@
   .commentdesc {
     font-size: 12px;
     padding:10px;
+    color:#ccc;
   }
 
   ul.commentlist

@@ -260,3 +260,11 @@ table tr
 {
     border-style: none !important;
 }
+
+.loading {
+
+    text-align: center;
+    margin: auto;
+
+  }
+  

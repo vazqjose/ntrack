@@ -2,14 +2,14 @@
     <div class="container" style='margin-top:3%'>
         <!--<button @click="getPosts">Load posts</button>-->
         <div v-if="errorMsg" class="alert alert-danger fade show" role="alert">
-              <strong>{{ errorMsg}}</strong> 
+              <strong>{{ errorMsg}}</strong>
         </div>
               
         <div v-for="post in posts" :key="post.id">
             <h3>{{post.id}}. {{post.title}}</h3>
             <p>{{post.body}}</p>
             <hr>
-        </div> 
+        </div>
     </div>
 </template>
 

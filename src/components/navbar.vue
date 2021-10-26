@@ -12,9 +12,10 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
               <li>
-                <router-link to='/posts' class="btn btn-outline-success me-2 newticket">
-                <i class="fas fa-clipboard-check"></i> View sample list API</router-link>
+                <router-link :to="{ name: 'newTicket' }" class="btn btn-outline-success me-2 newticket">
+                <i class="fas fa-clipboard-check"></i> Create a new ticket</router-link>
               </li>
         </ul>
         <ul class="nav navbar-nav">
@@ -36,8 +37,9 @@
                             <p class='email' id="loggedEmail">user@somedomain.com</p>
                         </div>
                         </li>
+                        <li><router-link :to="{ name: 'clientList' }" class="dropdown-item">View client list</router-link></li>                        
                         <li><a class="dropdown-item" href="#">Admin settings</a></li>
-                        <li><a class="dropdown-item" href="#">Manage staff accounts</a></li>         
+                        <li><router-link :to="{ name: 'userList' }" class="dropdown-item">Manage staff accounts</router-link></li>         
                         <li><a class="dropdown-item" href="#">Profile settings</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt"></i> Sign out</a></li>

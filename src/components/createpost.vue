@@ -7,11 +7,11 @@
                 </ul>
         </div>
         <div v-if="sucessMsg" class="alert alert-success fade show" role="alert">
-              <strong>{{ sucessMsg}}</strong> 
+              <strong>{{ sucessMsg }}</strong> 
         </div>
         
         <form class="myform" @submit.prevent="checkForm">
-            <label for="userID" class="control-label">{{formData }}</label>
+            <label for="userID" class="control-label">{{ formData }}</label>
             <hr>
             <div class="form-group">
                 <label for="userID" class="control-label">Post user ID</label>
@@ -36,8 +36,7 @@
         name: 'createPost',
         data() {
             return {
-                errors: [],
-                newPost: [],
+                errors: [],                
                 errorMsg: '',
                 sucessMsg: '',
                 formData: {
