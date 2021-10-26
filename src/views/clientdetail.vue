@@ -2,14 +2,16 @@
 <div id="showTicket" class="container">
 
     <fieldset class="myform" style="margin:auto;">
-            <legend><span>Client details ({{ this.fullname }})</span></legend>
+            <legend><span>Client details for <strong>{{ this.fullname }}</strong></span></legend>
             <div class="divider"></div>
             
               <!-- ALERTS SECTION START ------------------------------------------>
             
-            <div v-if="errorMsg" class="alert alert-danger alert-dismissible fade show" role="alert">
-              {{ errorMsg }}
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <div v-if="errors.length" class="alert alert-danger fade show" role="alert">
+              <strong>Please correct the following error(s):</strong>              
+                <ul>
+                <li v-for="error in errors" :key="error.index">{{ error }}</li>
+                </ul>
             </div>
             <div v-if="successMsg" class="alert alert-success alert-dismissible fade show" role="alert">
               {{ successMsg }}
@@ -17,7 +19,7 @@
             </div>
 
               <!----------------------- GENERAL DETAILS --------------------------------------->
-          <h3>{{ formData }}</h3>
+          <p class="control-label">{{ formData }}</p>
 
         <form @submit.prevent="checkForm">                        
           <h3 class="clearwhite"><i class="fas fa-info-circle"></i> Modify general client details</h3>
@@ -51,13 +53,18 @@
                   </div>
                 </div>
             </div>
+            <div class="divider"></div>
             <div class="row">
-                <div class="col-md-12">
                   <div class="form-group">
-                    <button class="btn btn-primary"><i class="fas fa-user-check"></i> Update details</button>
+                      <button class="btn btn-primary btn-outline-success newticket me-2 clearwhite">
+                        <i class="fas fa-user-check"></i> Update details
+                      </button> 
+                      <router-link :to="{ name: 'clientList' }" class="btn btn-primary btn-outline-success newticket me-2 clearwhite">
+                        <i class="far fa-arrow-alt-circle-left"></i> Go back
+                      </router-link>
                   </div>
-                </div>
             </div>
+            
           </form>
       
       </fieldset>
@@ -71,7 +78,7 @@
   export default {
     
     props: ['clientID'],
-    directives: { maska },
+    directives: { maska },    
     created() {
         this.loadClient(this.clientID)
     },
@@ -123,7 +130,8 @@
                   axios.get('https://2ktpylu8p5.execute-api.us-east-2.amazonaws.com/dev/api/v1/client/' + id)
                   .then((response) => {
                       console.log(response.data);
-                      this.clients = response.data;
+                      this.client = response.data;
+                      this.fullname = this.client.name + ' ' + this.client.last_name;
                   })
                   .catch((error) => {
                       console.log(error),
@@ -134,6 +142,7 @@
     data() {
         return {
           client: [],
+          errors: [],
           formData: {
                 _id: {
                   $oid: this.clientID

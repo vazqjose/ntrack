@@ -46,7 +46,8 @@
                       <textarea rows="2" id="description" class="form-control" v-model="formData.description" placeholder="Enter a brief summary of the service needed"></textarea>
                   </div>
                 </div>                
-            </div>            
+            </div>
+            <div class="divider"></div>         
             <div class="row">
                   <div class="form-group">
                       <button class="btn btn-primary btn-outline-success newticket me-2 clearwhite">
