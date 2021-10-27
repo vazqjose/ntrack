@@ -1,215 +1,248 @@
 <template>
-<div id="showTicket" class="container">
-
+  <div id="showTicket" class="container">
     <fieldset class="myform" style="margin:auto;">
-            <legend><span>Ticket details ({{ ticket.client_id.name }} {{ ticket.client_id.last_name }})</span></legend>
-            <div class="divider"></div>
-            
-            
-              <!-- ALERTS SECTION START ------------------------------------------>
-            
-            <div v-if="errorMsg" class="alert alert-danger alert-dismissible fade show" role="alert">
-              {{ errorMsg }}
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      <legend>
+        <span>Ticket details</span>
+      </legend>
+      <div class="divider"></div>
+      <h3><div class="row">
+        <div class="col-md-6">{{ updateData }}</div><div class="col-md-6">{{ commentData }}</div>
+      </div></h3>
+      
+
+      <!----------------------- GENERAL DETAILS --------------------------------------->
+
+      <form>
+        <div class="row">
+          <div class="col-md-6">
+            <h3 class="clearwhite">
+              <i class="fas fa-info-circle"></i> General Details
+            </h3>
+            <div class="form-group">
+              <p class="control-label clearblack">
+                <strong>Ticket number:</strong>
+                {{ printTicketNumber(this.ticket._id.$oid) }}
+              </p>
+              <p class="control-label clearblack">
+                <strong>Created by:</strong> {{ ticket.created_by.name }}
+                {{ ticket.created_by.last_name }}
+              </p>
+              <p class="control-label clearblack">
+                <strong>Description:</strong> {{ ticket.description }}
+              </p>
+              <p class="control-label clearblack">
+                <strong>Status: </strong> {{ ticket.status.toUpperCase() }}
+              </p>
+
+              <p class="control-label clearblack">
+                <strong>Client name:</strong> {{ ticket.client_id.client_name }}
+                {{ ticket.client_id.client_last_name }}
+              </p>
+              <p class="control-label clearblack">
+                <strong>Client phone:</strong> {{ ticket.client_id.client_phone }}
+              </p>
+              <p class="control-label clearblack">
+                <strong>Client email:</strong> {{ ticket.client_id.client_email }}
+              </p>
             </div>
-            <div v-if="successMsg" class="alert alert-success alert-dismissible fade show" role="alert">
-              {{ successMsg }}
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+            <!----------------------- STATUS UPDATE BLOCK ----------------------------------->
+            <div class="form-group">
+              <h3 class="clearwhite">
+                <i class="fas fa-history"></i> Status update history (
+                {{ ticket.status_updates.length }})
+              </h3>
+                    <form class="form-group">
+
+                      <div class="input-group">
+                        <select v-model="this.updateData.status" class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon">
+                          <option selected value="">Select a new status for the ticket and press OK...</option>
+                          <option value="Open">Open</option>
+                          <option value="Progress">Progress</option>
+                          <option value="Ready">Ready</option>
+                          <option value="Closed">Closed</option>
+                        </select>
+                        <button class="btn btn-outline-secondary font-weight-bold" type="button">Ok</button>
+                      </div>
+
+                    </form>
+              <table class="mytable table table-responsive clearblack">
+                <tr>
+                  <th>Status</th>
+                  <th>Employee name</th>
+                  <th>Date set</th>
+                </tr>
+                <tr v-for="statusline in ticket.status_updates"
+                  :key="statusline.status">
+                  <template v-if="statusline.status_change">
+                    <td>{{ statusline.status_change }}</td>
+                    <td>
+                      {{ statusline.created_by.name }}
+                      {{ statusline.created_by.last_name }}
+                    </td>
+                    <td>{{ statusline.created.$date }}</td>
+                  </template>
+                </tr>
+              </table>
+
+              
             </div>
+          </div>
+          <div class="col-md-6" style="padding-left:40px">
+            <h3 class="clearwhite">
+              <i class="far fa-comments"></i> Comments Log ({{
 
-
-              <!----------------------- GENERAL DETAILS --------------------------------------->
-
-        <form method="post" enctype="multipart/form-data" id="myform" action="">                            
-          
-            <div class="row">
-                <div class="col-md-6">
-                  <h3 class="clearwhite"><i class="fas fa-info-circle"></i> General Details</h3>
-                  <div class="form-group">
-                    <p class="control-label clearblack"><strong>Ticket number:</strong> {{ printTicketNumber(ticket._id.$oid) }}</p>
-                    <p class="control-label clearblack"><strong>Created by:</strong> {{ ticket.created_by.name }} {{ ticket.created_by.last_name }}</p>
-                    <p class="control-label clearblack"><strong>Description:</strong> {{ ticket.description }}</p>
-                    <p class="control-label clearblack"><strong>Status: </strong> {{ ticket.status.toUpperCase() }}</p>
-                  
-                    <p class="control-label clearblack"><strong>Client name:</strong> {{ ticket.client_id.name }} {{ ticket.client_id.last_name }}</p>
-                    <p class="control-label clearblack"><strong>Client phone:</strong> {{ ticket.client_id.phone }}</p>
-                    <p class="control-label clearblack"><strong>Client email:</strong> {{ ticket.client_id.email }}</p>                                      
-                  </div>
-                  
-                  
-                <!-------------------------------------- STATUS UPDATE BLOCK ----------------------------------->
-                <div class="form-group">
-                  <h3 class="clearwhite"><i class="fas fa-history"></i> Status update history ( {{ ticket.status_updates.length }})</h3>
-                  <table class="mytable table table-responsive clearblack">
-                    <tr>
-                        <th>Status</th>
-                        <th>Employee name</th>
-                        <th>Date set</th>
-                    </tr>
-                    <tr v-for="statusline in ticket.status_updates" :key="statusline.status">
-                      <template v-if="statusline.status_change">
-                        <td>{{ statusline.status_change }}</td>
-                        <td>{{ statusline.created_by.name }} {{ statusline.created_by.last_name }}</td>
-                        <td>{{ statusline.created.$date }}</td>
-                      </template>
-                    </tr>
-                  </table>
-                 
-                  <div class="row text-end">
-                    <a href='#' class='openPopup'  data-bs-toggle="modal" data-bs-target="#modalSetStatus">
-                        <i class="fas fa-plus-circle"></i>Set new status</a>
-                  </div>          
-                
-                </div>
-              </div>
-                <div class="col-md-6" style='padding-left:40px'>
-                  <h3 class="clearwhite"><i class="far fa-comments"></i> Comments Log ({{ ticket.status_updates.length }})</h3>
-
-                 <!------------------------------------- COMMENTS BLOCK ------------------------------->
-                  <ul class="commentlist">
-                    <li class="clearblack control-label" v-for="commline in ticket.status_updates" :key="commline.created.$date">                                                
-                      <p class="commentdesc clearblack">
-                        <strong>{{ commline.created_by.name }} {{ commline.created_by.last_name }}</strong> on {{ commline.created.$date }}
-                      </p>
-                        <p class="comment">{{ commline.comment }}</p>                     
-                      </li>
-                  </ul>
-             
-                    <div class="row text-end ">
-                    <a href='#' type='button' class='openPopup' data-bs-toggle="modal" data-bs-target="#modalAddComment">
-                    <i class="fas fa-comment-medical"></i>Add new comment</a>
+                ticket.status_updates.length
+              }})
+            </h3>
+            
+            <!--------------------- COMMENTS ADD FORM ------------------------------>
+                <form class="form-group" @submit.prevent="addComment(this.ticketID)">
+                  <textarea maxlength="200"
+                      v-model="this.commentData.comment"
+                      id="txtNewComment"                 
+                      class="form-control"
+                      rows="2"              
+                      placeholder="Write the content for a new posted note here..."
+                    />
+                    <div class=" text-end control-label">
+                      <button type="button" class="btn btn-outline-secondary font-weight-bold"><i class="fas fa-comment-alt"></i> Post note</button>
                     </div>
-                  
+                </form>
+       
+            <!--------------------- COMMENTS LIST ------------------------------>
+            <ul class="commentlist">
+              <template
+                class="clearblack control-label"
+                v-for="commline in ticket.status_updates"
+                :key="commline.created.$date">
+                <div v-if="commline.comment">
+                <li>
+                    <p class="commentdesc clearblack">
+                      <strong>{{ commline.created_by.name }}
+                        {{ commline.created_by.last_name }}</strong> on {{ commline.created.$date }}
+                    </p>
+                    <p class="comment">{{ commline.comment }}</p>
+                </li>
                 </div>
-              </div>          
-          </form>
-          </fieldset>
+              </template>
+            </ul>
 
-          <addcomment />
-
-            <!-- Modal CHANGE STATUS -->
-          
-            <div class="modal fade" id="modalSetStatus" tabindex="-1" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content mymodal">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Set a new status</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <div class="form-group">          
-                        <select id="selStatus" name="selStatus" class="form-select">
-                          <option value="" selected="selected">--Select a new status to set--</option>                                                    
-                          <option value="1">Service type sample</option>
-                        </select>              
-                    </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="far fa-times-circle"></i> Close</button>
-                    <button id="btnSetStatus" type="button" class="btn btn-dark" data-bs-dismiss="modal"><i class="fas fa-comment-medical"></i> OK</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-
-</div>
+          </div>
+        </div>
+      </form>
+    </fieldset>
+  
+ 
+  </div>
 </template>
 <script>
-  import axios from 'axios';
-import addcomment from '../components/addcomment.vue';
-  export default {
-  components: { addcomment },
-    props: ['ticketID'],
-    methods: {
-        printTicketNumber(id)
-            {
-                this.ticketNumber = '';
-                this.i = 0;                
+import axios from "axios";
 
-                while (this.i < 7)
-                {
-                  this.ticketNumber += id[this.i];
-                  this.i++;
-                }
-                return this.ticketNumber;
-            }
-    },
-    data() {
-      return {
-        ticket: [],
-        errorMsg: '',
-        successMsg: ''
-      }
-    },
-    
-    created() {
-        //axios.get('https://2ktpylu8p5.execute-api.us-east-2.amazonaws.com/dev/api/v1/ticket_full/6170be1ace938dab7b685231')
-        axios.get('https://2ktpylu8p5.execute-api.us-east-2.amazonaws.com/dev/api/v1/ticket_full/' + this.ticketID)
+export default {
+  
+  props: ["ticketID"],
+  data() {
+    return {
+      ticket: [],
+      updateData: {
+        'status': ''
+      },
+      commentData: {
+        'comment': ''
+      },
+      errorMsg: "",
+      successMsg: "",
+    }
+  },
+  created() {
+      this.loadTicket(this.ticketID)
+  },
+  methods: 
+  {
+      printTicketNumber(id) {
+        this.ticketNumber = "";
+        this.i = 0;
+
+        while (this.i < 7) {
+          this.ticketNumber += id[this.i];
+          this.i++;
+        }
+        return this.ticketNumber;
+      },
+      loadTicket(id) {
+        axios
+        .get(
+          "https://2ktpylu8p5.execute-api.us-east-2.amazonaws.com/dev/api/v1/ticket_full/" +
+            id
+        )
         .then((response) => {
-            console.log(response.data);
-            this.ticket = response.data;
+          console.log(response.data);
+          this.ticket = response.data;
         })
         .catch((error) => {
-            console.log(error),
-            this.errorMsg = 'There was an error loading this ticket. Try again!'
-        })
-    }
+          console.log(error),
+            (this.errorMsg =
+              "There was an error loading this ticket. Try again!");
+        });
+      },
+      addComment(id)  {
+        console.log('Comment passed');
+        axios.put('https://2ktpylu8p5.execute-api.us-east-2.amazonaws.com/dev/api/v1/ticket/' + id, this.commentData)
+                 .then(
+                     response => {
+                         console.log('Adding comment to #' + id + '...');
+                         console.log(response);
+                         console.log(this.commentData);                   
+                         this.commentData.comment = '';
+                         this.loadTicket(id);
+                         return;
+                     })
+                 .catch(
+                     error => {
+                         console.log(error),
+                         this.errorMsg = 'Error adding comment'
+                     })
+      }
   }
-  /*
-
-      status_updates: [
-        {
-        comment: '',
-        created: '',
-        created_by: {
-          _id: '',
-          name: '',
-          last_name: ''
-          }
-        }
-      ]
-
-  */
+}
 
 </script>
 
 <style scoped>
-  .commentdesc {
-    font-size: 12px;
-    padding:10px;
-    color:#ccc;
-  }
+.commentdesc {
+  font-size: 12px;
+  padding: 10px;
+  color: #ccc;
+}
 
-  ul.commentlist
-  {
-    list-style: none;
-    list-style-image: none;
-    list-style-type: none;
-    margin:0 !important;
-    padding-inline-start: 0 !important;
-  }
+ul.commentlist {
+  list-style: none;
+  list-style-image: none;
+  list-style-type: none;
+  margin: 0 !important;
+  padding-inline-start: 0 !important;
+  color: white;
+}
 
-  ul.commentlist li
-  {
-    padding: 10px;
-    border-bottom: 1px dotted #666;
-  }
+ul.commentlist li {
+  padding: 10px;
+  border-bottom: 1px dotted #666;
+}
 
-  ul.commentlist li:last-child
-  {
-    border: 0;
-  }
+ul.commentlist li:last-child {
+  border: 0;
+}
 
- ul.commentlist li > p
-  {
-    margin: 0;
-  }
+ul.commentlist li > p {
+  margin: 0;
+}
 
-   ul.commentlist li > p.comment
-  {
-    padding: 10px;
-  }
+ul.commentlist li > p.comment {
+  padding: 10px;
+}
 
-
+ .btn {
+   color:white;
+ }
 </style>
