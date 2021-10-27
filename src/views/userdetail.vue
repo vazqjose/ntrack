@@ -19,7 +19,7 @@
 
               <!----------------------- GENERAL DETAILS --------------------------------------->
 
-        <form method="post" enctype="multipart/form-data" id="myform" action="">                            
+        <form>                            
           <h3 class="clearwhite"><i class="fas fa-info-circle"></i> Modify general details</h3>
             <div class="row">
                 <div class="col-md-6">                  

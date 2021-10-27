@@ -1,7 +1,10 @@
 <template>
   <div class="container">
     <template v-if="tickets.length > 0">
-      <h5 class="text-center clearblack">{{ tickets.length }} tickets in total</h5>
+      <div class="control-label text-center">
+              <h1>Tickets list ({{ tickets.length }} total)</h1>
+              <div class="divider"></div>
+      </div>      
 <!--
     <div class="dropdown text-end filterMenu">
       <a
@@ -39,7 +42,7 @@
           </router-link>
         </td>
         <td>{{ printTicketNumber(ticket._id.$oid) }}</td>
-        <td>{{ ticket.client_id.name}} {{ ticket.client_id.last_name}}</td>
+        <td>{{ ticket.client_id.client_name}} {{ ticket.client_id.client_last_name}}</td>
         <td>{{ ticket.status.toUpperCase() }}</td>
         <td>{{ ticket.description }}</td>
         <td>{{ ticket.updated_at.$date }}</td>
@@ -74,6 +77,8 @@
                 errorMsg: ''
             }
         },
+
+        
         methods: {
             listTickets() {
                 axios.get('https://2ktpylu8p5.execute-api.us-east-2.amazonaws.com/dev/api/v1/ticketsfull')

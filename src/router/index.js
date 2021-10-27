@@ -1,8 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import postList from '../views/postlist.vue'
 import singleBlog from '../views/singleblog.vue'
+
 import clientList from '../views/clientlist.vue'
 import clientDetail from '../views/clientdetail.vue'
+import newClient from '../views/newclient.vue'
 import userList from '../views/userlist.vue'
 import userDetail from '../views/userdetail.vue'
 
@@ -61,6 +63,11 @@ const routes = [
         name: 'newTicket',
         component: newTicket,
         props: true
+    },
+    {
+        path: '/newclient',
+        name: 'newClient',
+        component: newClient,        
     }
 ]
 

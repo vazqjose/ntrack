@@ -18,9 +18,9 @@
                 <i class="far fa-file-alt"></i>
               </router-link>
             </td>            
-            <td>{{ client.name }} {{ client.last_name}}</td>
-            <td>{{ client.email }}</td>
-            <td>{{ client.phone }}</td>
+            <td>{{ client.client_name }} {{ client.client_last_name}}</td>
+            <td>{{ client.client_email }}</td>
+            <td>{{ client.client_phone }}</td>
             <td>{{ client.created_at.$date }}</td>
         </tr>
 

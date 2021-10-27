@@ -19,7 +19,7 @@
             </div>
 
               <!----------------------- GENERAL DETAILS --------------------------------------->
-          <p class="control-label">{{ formData }}</p>
+          <!--<p class="control-label">{{ formData }}</p> -->
 
         <form @submit.prevent="checkForm">                        
           <h3 class="clearwhite"><i class="fas fa-info-circle"></i> Modify general client details</h3>
@@ -27,29 +27,29 @@
                 <div class="col-md-6">                  
                   <div class="form-group">
                     <p class="control-label clearblack">
-                      <strong>First name:</strong> {{ client.name }}</p>                                        
-                    <input type="text" v-model="formData.name" id="clientName" rows="1" class="form-control" placeholder="Enter a new value to be changed">
+                      <strong>First name:</strong> {{ client.client_name }}</p>                                        
+                    <input type="text" v-model="formData.client_name" id="clientName" rows="1" class="form-control" placeholder="Enter a new value to be changed">
                   </div>
                 </div>
                 <div class="col-md-6">                  
                   <div class="form-group">
-                    <p class="control-label clearblack"><strong>Last name:</strong> {{ client.last_name }}</p>                    
-                    <input type="text" v-model="formData.last_name" id="last_name" class="form-control" placeholder = 'Enter a new value to be changed'>
+                    <p class="control-label clearblack"><strong>Last name:</strong> {{ client.client_last_name }}</p>                    
+                    <input type="text" v-model="formData.client_last_name" id="last_name" class="form-control" placeholder = 'Enter a new value to be changed'>
                   </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
-                    <p class="control-label clearblack"><strong>Client phone number:</strong> {{ client.phone }}</p>
-                    <input v-maska="'(###) ###-####'" type="text" v-model="formData.phone" id="phone" class="form-control" placeholder = '(999) 999-9999'>
+                    <p class="control-label clearblack"><strong>Client phone number:</strong> {{ client.client_phone }}</p>
+                    <input v-maska="'(###) ###-####'" type="text" v-model="formData.client_phone" id="phone" class="form-control" placeholder = '(999) 999-9999'>
                   </div>
                 </div>
 
                 <div class="col-md-6">
                   <div class="form-group">
-                    <p class="control-label clearblack"><strong>Client email address:</strong> {{ client.email }}</p>
-                    <input type="text" v-model="formData.email" id="email" class="form-control" placeholder = 'Enter a new value to be changed'>                                     
+                    <p class="control-label clearblack"><strong>Client email address:</strong> {{ client.client_email }}</p>
+                    <input type="text" v-model="formData.client_email" id="email" class="form-control" placeholder = 'Enter a new value to be changed'>                                     
                   </div>
                 </div>
             </div>
@@ -87,51 +87,54 @@
 
                 if (this.formData.name && this.formData.last_name && this.formData.phone && this.formData.email) {
                     
-                    console.log('form passed');
+                    console.log('Form passed');
                     this.updateClient(this.clientID);           
                 }
                 this.successMsg = '';
                 this.errors = [];
 
-                if (!this.formData.name) {
+                if (!this.formData.client_name) {
                     console.log('Form didnt pass');
                     this.errors.push('First name is required');
                 }
-                if (!this.formData.last_name) {
+                if (!this.formData.client_last_name) {
                     console.log('Form didnt pass');
                     this.errors.push('Last name is required');
                 }
-                if (!this.formData.phone) {
+                if (!this.formData.client_phone) {
                     console.log('Form didnt pass');
                     this.errors.push('Phone number is required');
                 }
-                if (!this.formData.email) {
+                if (!this.formData.client_email) {
                     console.log('Form didnt pass');
                     this.errors.push('A valid email address is required');
                 }
         },
-        updateClient(id) {
-                 axios.put('https://2ktpylu8p5.execute-api.us-east-2.amazonaws.com/dev/api/v1/clients/' + id)
+        updateClient(id) {          
+                 axios.put('https://2ktpylu8p5.execute-api.us-east-2.amazonaws.com/dev/api/v1/clients/' + id, this.formData)
                  .then(
                      response => {
-                         console.log(response),
-                         console.log(this.formData),
-                         this.successMsg = 'New ticket added successfuly',
-                         this.errors = []
+                         console.log('Saving record #' + id + '...');
+                         console.log(response);
+                         console.log(this.formData);
+                         this.successMsg = 'Client details updated successfuly';
+                         this.errors = [];
+                         this.loadClient(id);
                          return;
                      })
                  .catch(
                      error => {
                          console.log(error),
-                         this.errorMsg = 'Error adding new ticket'
+                         this.errorMsg = 'Error saving client details'
                      })
         },
         loadClient(id) {                   
                   axios.get('https://2ktpylu8p5.execute-api.us-east-2.amazonaws.com/dev/api/v1/client/' + id)
                   .then((response) => {
+                      console.log('Loading record #' + id + '...');
                       console.log(response.data);
                       this.client = response.data;
-                      this.fullname = this.client.name + ' ' + this.client.last_name;
+                      this.fullname = this.client.client_name + ' ' + this.client.client_last_name;
                   })
                   .catch((error) => {
                       console.log(error),
@@ -147,10 +150,10 @@
                 _id: {
                   $oid: this.clientID
                 },
-                name: '',
-                last_name: '',
-                phone: '',
-                email: ''
+                client_name: '',
+                client_last_name: '',
+                client_phone: '',
+                client_email: ''
           },
           fullname: '',
           errorMsg: '',

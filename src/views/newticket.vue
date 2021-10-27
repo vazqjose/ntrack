@@ -9,7 +9,7 @@
         <form @submit.prevent="checkForm">                            
           
             <div class="row">
-              <h3 class="clearwhite"><i class="fas fa-info-circle"></i> Enter a description of the service to be provided</h3>
+              <h3 class="clearwhite"><i class="fas fa-info-circle"></i> Enter a description of the service to be provided and ID of client</h3>
             </div>
 
             <!-------------------------- ALERTS SECTION START ------------------------>
@@ -40,12 +40,18 @@
                      
                   </div> 
                 </div>-->
-                <div class="col-md-12">                  
+                <div class="col-md-6">                  
                   <div class="form-group">
                       <p class="control-label clearblack"><strong>Description of issue:</strong> </p>
                       <textarea rows="2" id="description" class="form-control" v-model="formData.description" placeholder="Enter a brief summary of the service needed"></textarea>
                   </div>
-                </div>                
+                </div>
+                <div class="col-md-6">                  
+                  <div class="form-group">
+                      <p class="control-label clearblack"><strong>ID of client:</strong></p>
+                      <textarea rows="2" id="client_id" class="form-control" v-model="formData.client_id" placeholder="Paste the client ID here"></textarea>
+                  </div>
+                </div>                 
             </div>
             <div class="divider"></div>         
             <div class="row">
@@ -53,6 +59,10 @@
                       <button class="btn btn-primary btn-outline-success newticket me-2 clearwhite">
                         <i class="fas fa-clipboard-check"></i> Create ticket
                       </button> 
+                      
+                      <router-link to='/newClient' class="btn btn-primary btn-outline-success newticket me-2 clearwhite">
+                        <i class="fas fa-user-check"></i> Add a new client
+                      </router-link>
                       <router-link to='/' class="btn btn-primary btn-outline-success newticket me-2 clearwhite">
                         <i class="far fa-arrow-alt-circle-left"></i> Go back
                       </router-link>
@@ -70,7 +80,7 @@
   export default {
     name: 'newTicket',
     created() {
-        this.loadClients()
+        //this.loadClients()
     },
     data() {
         return {          
@@ -79,9 +89,10 @@
           errorMsg: '',
           successMsg: '',
           formData: {
-              client_id: '6170be1ace938dab7b685232',
-              status: 'Open',
-              description: ''
+              client_id: '',
+              status: 'open',
+              description: '',
+              user_id: '616f4c9ff66c2a496d7e5bd3'
           }          
         }
     },
@@ -101,6 +112,9 @@
                 }
             },
             addTicket() {
+                 if (!this.formData.client_id) {
+                       this.formData.client_id = '6170be1ace938dab7b685232';
+                     }
                  axios.post('https://2ktpylu8p5.execute-api.us-east-2.amazonaws.com/dev/api/v1/tickets', this.formData)
                  .then(
                      response => {
@@ -129,8 +143,7 @@
                       this.errorMsg = 'There was an error loading client list. Try again!'
                   })
             }
-    }
-        
+    }        
   }
   
 

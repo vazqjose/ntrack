@@ -12,7 +12,7 @@
 
       <!----------------------- GENERAL DETAILS --------------------------------------->
 
-      
+      <form>
         <div class="row">
           <div class="col-md-6">
             <h3 class="clearwhite">
@@ -45,7 +45,7 @@
                 <strong>Client email:</strong> {{ ticket.client_id.client_email }}
               </p>
             </div>
-            
+
             <!----------------------- STATUS UPDATE BLOCK ----------------------------------->
             <div class="form-group">
               <h3 class="clearwhite">
@@ -91,10 +91,11 @@
           <div class="col-md-6" style="padding-left:40px">
             <h3 class="clearwhite">
               <i class="far fa-comments"></i> Comments Log ({{
-                
+
                 ticket.status_updates.length
               }})
             </h3>
+            
             <!--------------------- COMMENTS ADD FORM ------------------------------>
                 <form class="form-group" @submit.prevent="addComment(this.ticketID)">
                   <textarea maxlength="200"
@@ -129,7 +130,7 @@
 
           </div>
         </div>
-      
+      </form>
     </fieldset>
   
  
