@@ -26,6 +26,25 @@
             </div>
 
             <div class="row">
+                  
+
+
+                  <div class="col-md-6">                  
+                  <div class="form-group">
+                      <p class="control-label clearblack"><strong>Client:</strong></p>
+                      <div class="input-group">
+                        <select class="form-select" v-model="formData.client_id">
+                          <option selected value="">Select a client to assign this service...</option>
+                          <option value='616f4c9ff66c2a496d7e5bd3'>JOSE CRUZ</option>
+                          
+                        </select>                        
+                      </div>
+                  </div>
+                </div>
+
+
+            </div>
+            <div class="row">
               <!--
                 <div class="col-md-6">      
                   <div class="form-group">
@@ -48,16 +67,11 @@
                 </div>
                 <div class="col-md-6">                  
                   <div class="form-group">
-                      <p class="control-label clearblack"><strong>Client:</strong></p>
-                      <div class="input-group">
-                        <select class="form-select" v-model="formData.client_id">
-                          <option selected value="">Select a client to assign this service...</option>
-                          <option value='616f4c9ff66c2a496d7e5bd3'>JOSE CRUZ</option>
-                          
-                        </select>                        
-                      </div>
+                      <p class="control-label clearblack"><strong>Information of equipment:</strong> </p>
+                      <textarea rows="2" length='200' id="equipment" class="form-control" v-model="formData.equipment" placeholder="Enter a brand, model and/or serial number"></textarea>
+                    </div>
                   </div>
-                </div>                 
+                                 
             </div>
             <div class="divider"></div>         
             <div class="row">
@@ -66,9 +80,7 @@
                         <i class="fas fa-clipboard-check"></i> Create ticket
                       </button> 
                       
-                      <router-link to='/newClient' class="btn btn-primary btn-outline-success newticket me-2 clearwhite">
-                        <i class="fas fa-user-check"></i> Add a new client
-                      </router-link>
+                      
                       <router-link to='/' class="btn btn-primary btn-outline-success newticket me-2 clearwhite">
                         <i class="far fa-arrow-alt-circle-left"></i> Go back
                       </router-link>
@@ -90,16 +102,17 @@
     },
     data() {
         return {          
-          errors: [],
-          clients: [],
-          errorMsg: '',
-          successMsg: '',
-          formData: {
-              client_id: '',
-              status: 'open',
-              description: '',
-              user_id: ''
-          }          
+            errors: [],
+            clients: [],
+            errorMsg: '',
+            successMsg: '',
+            formData: {
+                client_id: '',
+                status: 'open',
+                description: '',
+                device: '',
+                user_id: ''
+            }            
         }
     },
     methods: {
@@ -107,7 +120,7 @@
 
                 if (this.formData.description && this.formData.client_id) {
                     this.addTicket();
-                    console.log('form passed');              
+                    console.log('form passed');        
                 }
                 this.successMsg = '';
                 this.errors = [];
@@ -141,7 +154,7 @@
                          console.log(error),
                          this.errorMsg = 'Error adding new ticket'
                      })
-            },
+            },/*
             loadClients() {                   
                   axios.get('https://2ktpylu8p5.execute-api.us-east-2.amazonaws.com/dev/api/v1/clients')
                   .then((response) => {
@@ -152,7 +165,7 @@
                       console.log(error),
                       this.errorMsg = 'There was an error loading client list. Try again!'
                   })
-            }
+            }*/
     }        
   }
   
