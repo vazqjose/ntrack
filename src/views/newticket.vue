@@ -43,13 +43,19 @@
                 <div class="col-md-6">                  
                   <div class="form-group">
                       <p class="control-label clearblack"><strong>Description of issue:</strong> </p>
-                      <textarea rows="2" id="description" class="form-control" v-model="formData.description" placeholder="Enter a brief summary of the service needed"></textarea>
+                      <textarea rows="2" length='200' id="description" class="form-control" v-model="formData.description" placeholder="Enter a brief summary of the service needed"></textarea>
                   </div>
                 </div>
                 <div class="col-md-6">                  
                   <div class="form-group">
-                      <p class="control-label clearblack"><strong>ID of client:</strong></p>
-                      <textarea rows="2" id="client_id" class="form-control" v-model="formData.client_id" placeholder="Paste the client ID here"></textarea>
+                      <p class="control-label clearblack"><strong>Client:</strong></p>
+                      <div class="input-group">
+                        <select class="form-select" v-model="formData.client_id">
+                          <option selected value="">Select a client to assign this service...</option>
+                          <option value='616f4c9ff66c2a496d7e5bd3'>JOSE CRUZ</option>
+                          
+                        </select>                        
+                      </div>
                   </div>
                 </div>                 
             </div>
@@ -92,14 +98,14 @@
               client_id: '',
               status: 'open',
               description: '',
-              user_id: '616f4c9ff66c2a496d7e5bd3'
+              user_id: ''
           }          
         }
     },
     methods: {
         checkForm: function() {
 
-                if (this.formData.description) {
+                if (this.formData.description && this.formData.client_id) {
                     this.addTicket();
                     console.log('form passed');              
                 }
@@ -109,6 +115,10 @@
                 if (!this.formData.description) {
                     console.log('Form didnt pass');
                     this.errors.push('Description of the issue is required');
+                }
+                if (!this.formData.client_id) {
+                    console.log('Form didnt pass');
+                    this.errors.push('You need to select a client from the list');
                 }
             },
             addTicket() {

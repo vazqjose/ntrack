@@ -14,7 +14,7 @@
                 </ul>
             </div>
             <div v-if="successMsg" class="alert alert-success alert-dismissible fade show" role="alert">
-              {{ successMsg }}
+              {{ this.successMsg }}
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
 
@@ -56,7 +56,7 @@
             <div class="divider"></div>
             <div class="row">
                   <div class="form-group">
-                      <button class="btn btn-primary btn-outline-success newticket me-2 clearwhite">
+                      <button class="btn btn-primary btn-outline-success newticket me-2 clearwhite" role="button">
                         <i class="fas fa-user-check"></i> Update details
                       </button> 
                       <router-link :to="{ name: 'clientList' }" class="btn btn-primary btn-outline-success newticket me-2 clearwhite">
@@ -78,14 +78,32 @@
   export default {
     
     props: ['clientID'],
-    directives: { maska },    
+    directives: { maska },
+    data() {
+        return {
+          client: [],
+          errors: [],
+          formData: {
+                _id: {
+                  $oid: this.clientID
+                },
+                client_name: '',
+                client_last_name: '',
+                client_phone: '',
+                client_email: ''
+          },
+          fullname: '',
+          errorMsg: '',
+          successMsg: ''
+        }
+    },   
     created() {
         this.loadClient(this.clientID)
     },
     methods: {
         checkForm: function() {
 
-                if (this.formData.name && this.formData.last_name && this.formData.phone && this.formData.email) {
+                if (this.formData.client_name && this.formData.client_last_name && this.formData.client_phone && this.formData.client_email) {
                     
                     console.log('Form passed');
                     this.updateClient(this.clientID);           
@@ -142,24 +160,7 @@
                   })
             }
     },
-    data() {
-        return {
-          client: [],
-          errors: [],
-          formData: {
-                _id: {
-                  $oid: this.clientID
-                },
-                client_name: '',
-                client_last_name: '',
-                client_phone: '',
-                client_email: ''
-          },
-          fullname: '',
-          errorMsg: '',
-          successMsg: ''
-        }
-    }
+    
   }
   
 

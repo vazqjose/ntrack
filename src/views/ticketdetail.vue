@@ -2,13 +2,9 @@
   <div id="showTicket" class="container">
     <fieldset class="myform" style="margin:auto;">
       <legend>
-        <span>Ticket details</span>
+        <span>Ticket details (#{{ this.printTicketNumber(ticket._id?.$oid) }})</span>
       </legend>
       <div class="divider"></div>
-      <h3><div class="row">
-        <div class="col-md-6">{{ updateData }}</div><div class="col-md-6">{{ commentData }}</div>
-      </div></h3>
-      
 
       <!----------------------- GENERAL DETAILS --------------------------------------->
 
@@ -19,50 +15,45 @@
               <i class="fas fa-info-circle"></i> General Details
             </h3>
             <div class="form-group">
+              
               <p class="control-label clearblack">
-                <strong>Ticket number:</strong>
-                {{ printTicketNumber(this.ticket._id.$oid) }}
-              </p>
-              <p class="control-label clearblack">
-                <strong>Created by:</strong> {{ ticket.created_by.name }}
-                {{ ticket.created_by.last_name }}
+                <strong>Created by:</strong> {{ ticket.created_by?.name }}
+                {{ ticket.created_by?.last_name }}
               </p>
               <p class="control-label clearblack">
                 <strong>Description:</strong> {{ ticket.description }}
               </p>
               <p class="control-label clearblack">
-                <strong>Status: </strong> {{ ticket.status.toUpperCase() }}
+                <strong>Status: </strong> {{ ticket.status?.toUpperCase() }}
               </p>
 
               <p class="control-label clearblack">
-                <strong>Client name:</strong> {{ ticket.client_id.client_name }}
-                {{ ticket.client_id.client_last_name }}
+                <strong>Client name:</strong> {{ ticket.client_id?.client_name }}
+                {{ ticket.client_id?.client_last_name }}
               </p>
               <p class="control-label clearblack">
-                <strong>Client phone:</strong> {{ ticket.client_id.client_phone }}
+                <strong>Client phone:</strong> {{ ticket.client_id?.client_phone }}
               </p>
               <p class="control-label clearblack">
-                <strong>Client email:</strong> {{ ticket.client_id.client_email }}
+                <strong>Client email:</strong> {{ ticket.client_id?.client_email }}
               </p>
             </div>
-            
+            <div class="divider"></div>
             <!----------------------- STATUS UPDATE BLOCK ----------------------------------->
             <div class="form-group">
               <h3 class="clearwhite">
-                <i class="fas fa-history"></i> Status update history (
-                {{ ticket.status_updates.length }})
-              </h3>
-                    <form class="form-group">
+                <i class="fas fa-history"></i> Status update history</h3>
+                    <form class="form-group" @submit.prevent="addStatus(this.ticketID)">
 
                       <div class="input-group">
                         <select v-model="this.updateData.status" class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon">
-                          <option selected value="">Select a new status for the ticket and press OK...</option>
+                          <option selected value="">Select a new status from the list and press OK...</option>
                           <option value="Open">Open</option>
                           <option value="Progress">Progress</option>
                           <option value="Ready">Ready</option>
                           <option value="Closed">Closed</option>
                         </select>
-                        <button class="btn btn-outline-secondary font-weight-bold" type="button">Ok</button>
+                        <button v-on:click="addStatus(this.ticketID)" class="btn btn-outline-secondary font-weight-bold" type="button">OK</button>
                       </div>
 
                     </form>
@@ -90,22 +81,20 @@
           </div>
           <div class="col-md-6" style="padding-left:40px">
             <h3 class="clearwhite">
-              <i class="far fa-comments"></i> Comments Log ({{
-                
-                ticket.status_updates.length
-              }})
-            </h3>
+              <i class="far fa-comments"></i> Posted comments</h3>
             <!--------------------- COMMENTS ADD FORM ------------------------------>
                 <form class="form-group" @submit.prevent="addComment(this.ticketID)">
-                  <textarea maxlength="200"
+                  <textarea                       
                       v-model="this.commentData.comment"
-                      id="txtNewComment"                 
+                      id="txtNewComment"    
+                      maxlength="200"             
                       class="form-control"
                       rows="2"              
-                      placeholder="Write the content for a new posted note here..."
+                      placeholder="Add a new note for this here..."
                     />
-                    <div class=" text-end control-label">
-                      <button type="button" class="btn btn-outline-secondary font-weight-bold"><i class="fas fa-comment-alt"></i> Post note</button>
+                    <div class="text-end">
+                      <button type="button" v-on:click="addComment(this.ticketID)" class="btn btn-outline-secondary font-weight-bold">
+                        <i class="fas fa-comment-alt"></i> Post note</button>                     
                     </div>
                 </form>
        
@@ -115,15 +104,15 @@
                 class="clearblack control-label"
                 v-for="commline in ticket.status_updates"
                 :key="commline.created.$date">
-                <div v-if="commline.comment">
-                <li>
-                    <p class="commentdesc clearblack">
-                      <strong>{{ commline.created_by.name }}
-                        {{ commline.created_by.last_name }}</strong> on {{ commline.created.$date }}
-                    </p>
-                    <p class="comment">{{ commline.comment }}</p>
-                </li>
-                </div>
+                    <div v-if="commline.comment">
+                        <li>
+                            <p class="commentdesc clearblack">
+                              <strong>{{ commline.created_by.name }}
+                                {{ commline.created_by.last_name }}</strong> on {{ commline.created.$date }}
+                            </p>
+                            <p class="comment">{{ commline.comment }}</p>
+                        </li>
+                    </div>
               </template>
             </ul>
 
@@ -159,48 +148,64 @@ export default {
   },
   methods: 
   {
-      printTicketNumber(id) {
-        this.ticketNumber = "";
-        this.i = 0;
-
-        while (this.i < 7) {
-          this.ticketNumber += id[this.i];
-          this.i++;
-        }
-        return this.ticketNumber;
+      printTicketNumber(id)
+      {        
+        return id?.substr(0,7);
       },
       loadTicket(id) {
-        axios
-        .get(
-          "https://2ktpylu8p5.execute-api.us-east-2.amazonaws.com/dev/api/v1/ticket_full/" +
-            id
-        )
-        .then((response) => {
-          console.log(response.data);
-          this.ticket = response.data;
-        })
-        .catch((error) => {
-          console.log(error),
-            (this.errorMsg =
-              "There was an error loading this ticket. Try again!");
-        });
+          console.log('Fetching ticket...');
+          axios
+          .get(
+            "https://2ktpylu8p5.execute-api.us-east-2.amazonaws.com/dev/api/v1/ticket_full/" +
+              id
+          )
+          .then((response) => {          
+              console.log(response.data);
+              this.ticket = response.data;
+          })
+          .catch((error) => {
+            console.log(error);
+            this.errorMsg = "There was an error loading this ticket. Try again!";
+          });
       },
       addComment(id)  {
-        console.log('Comment passed');
-        axios.put('https://2ktpylu8p5.execute-api.us-east-2.amazonaws.com/dev/api/v1/ticket/' + id, this.commentData)
+        if (!this.commentData.comment) {
+          return;
+        }
+        console.log('Posting comment for ticket #' + id + '...');
+        console.log(this.commentData);
+        axios.put('https://2ktpylu8p5.execute-api.us-east-2.amazonaws.com/dev/api/v1/tickets/' + id, this.commentData)
                  .then(
-                     response => {
-                         console.log('Adding comment to #' + id + '...');
-                         console.log(response);
-                         console.log(this.commentData);                   
+                     response => {                                                  
+                         console.log(response);                                            
                          this.commentData.comment = '';
                          this.loadTicket(id);
                          return;
                      })
                  .catch(
-                     error => {
-                         console.log(error),
-                         this.errorMsg = 'Error adding comment'
+                     error => {                         
+                         this.errorMsg = 'Error adding comment',
+                         console.log(error)
+                     })
+      },
+      addStatus(id)  {
+        if (!this.updateData.status) {
+          return;
+        }
+        console.log('Setting status for ticket #' + id + '...');
+        console.log(this.updateData);
+        axios.put('https://2ktpylu8p5.execute-api.us-east-2.amazonaws.com/dev/api/v1/tickets/' + id, this.updateData)
+                 .then(
+                     response => {                                                  
+                         console.log(response);                                            
+                         this.updateData.status = '';
+                         this.loadTicket(id);
+                         return;
+                     })
+                 .catch(
+                     error => {                         
+                         this.errorMsg = 'Error setting status',
+                         console.log(error)
                      })
       }
   }
@@ -211,8 +216,12 @@ export default {
 <style scoped>
 .commentdesc {
   font-size: 12px;
-  padding: 10px;
+  padding: 10px !important;
   color: #ccc;
+}
+
+p.comment {
+  padding:5px 10px !important;
 }
 
 ul.commentlist {
@@ -221,20 +230,22 @@ ul.commentlist {
   list-style-type: none;
   margin: 0 !important;
   padding-inline-start: 0 !important;
+  padding:0 !important;
   color: white;
 }
 
 ul.commentlist li {
-  padding: 10px;
-  border-bottom: 1px dotted #666;
+  padding: 0 10px 10px 0;
+  
+  border-bottom: 1px dotted #666 !important;
+  margin:0 0 20px !important;
 }
 
-ul.commentlist li:last-child {
-  border: 0;
-}
 
 ul.commentlist li > p {
-  margin: 0;
+  padding:0;
+  margin:0;
+  
 }
 
 ul.commentlist li > p.comment {

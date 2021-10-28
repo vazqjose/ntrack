@@ -71,12 +71,12 @@
     props: ['userID'],
     methods: {},
     data() {
-      return {
-        user: [],
-        fullname: '',
-        errorMsg: '',
-        successMsg: ''
-      }
+        return {
+          user: [],
+          fullname: '',
+          errorMsg: '',
+          successMsg: ''
+        }
     },
     
     created() {        
