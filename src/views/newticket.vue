@@ -120,7 +120,8 @@
 
                 if (this.formData.description && this.formData.client_id && this.formData.device) {
                     this.addTicket();
-                    console.log('form passed');        
+                    console.log('form passed');
+                    console.log(this.formData);   
                 }
                 this.successMsg = '';
                 this.errors = [];
@@ -140,12 +141,11 @@
             },
             addTicket() {
               console.log(this.formData);
-              console.log(this.formData)             
+                     
                  axios.post('https://2ktpylu8p5.execute-api.us-east-2.amazonaws.com/dev/api/v1/tickets', this.formData)
                  .then(
                      response => {
-                         console.log(response),
-                         console.log(this.formData),
+                         console.log(response),                         
                          this.successMsg = 'New ticket added successfuly',
                          this.formData.client_id = '',
                          this.formData.description = '',
