@@ -139,6 +139,7 @@
                 }
             },
             addTicket() {
+              console.log(this.formData);
               console.log(this.formData)             
                  axios.post('https://2ktpylu8p5.execute-api.us-east-2.amazonaws.com/dev/api/v1/tickets', this.formData)
                  .then(
