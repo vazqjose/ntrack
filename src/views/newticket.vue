@@ -68,7 +68,7 @@
                 <div class="col-md-6">                  
                   <div class="form-group">
                       <p class="control-label clearblack"><strong>Information of equipment:</strong> </p>
-                      <textarea rows="2" length='200' id="equipment" class="form-control" v-model="formData.equipment" placeholder="Enter a brand, model and/or serial number"></textarea>
+                      <textarea rows="2" length='200' id="device" class="form-control" v-model="formData.device" placeholder="Enter a brand, model and/or serial number"></textarea>
                     </div>
                   </div>
                                  
@@ -111,14 +111,14 @@
                 status: 'open',
                 description: '',
                 device: '',
-                user_id: ''
+                user_id: '616f4c9ff66c2a496d7e5bd3'
             }            
         }
     },
     methods: {
         checkForm: function() {
 
-                if (this.formData.description && this.formData.client_id) {
+                if (this.formData.description && this.formData.client_id && this.formData.device) {
                     this.addTicket();
                     console.log('form passed');        
                 }
@@ -133,8 +133,13 @@
                     console.log('Form didnt pass');
                     this.errors.push('You need to select a client from the list');
                 }
+                if (!this.formData.device) {
+                    console.log('Form didnt pass');
+                    this.errors.push('You need to specify the client\'s device');
+                }
             },
             addTicket() {
+              console.log(this.formData)
                  if (!this.formData.client_id) {
                        this.formData.client_id = '6170be1ace938dab7b685232';
                      }
@@ -146,6 +151,7 @@
                          this.successMsg = 'New ticket added successfuly',
                          this.formData.client_id = '',
                          this.formData.description = '',
+                         this.formData.device = '',
                          this.errors = []
                          return;
                      })

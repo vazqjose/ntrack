@@ -45,7 +45,7 @@
         <td>{{ ticket.client_id.client_name}} {{ ticket.client_id.client_last_name}}</td>
         <td>{{ ticket.status.toUpperCase() }}</td>
         <td>{{ ticket.description }}</td>
-        <td>{{ ticket.updated_at.$date }}</td>
+        <td>{{ ticket.updated_at }}</td>
         </tr>
 
     </table>

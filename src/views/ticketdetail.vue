@@ -24,6 +24,9 @@
                 <strong>Description:</strong> {{ ticket.description }}
               </p>
               <p class="control-label clearblack">
+                <strong>Device:</strong> {{ ticket.device }}
+              </p>
+              <p class="control-label clearblack">
                 <strong>Status: </strong> {{ ticket.status?.toUpperCase() }}
               </p>
 
@@ -71,7 +74,7 @@
                       {{ statusline.created_by.name }}
                       {{ statusline.created_by.last_name }}
                     </td>
-                    <td>{{ statusline.created.$date }}</td>
+                    <td>{{ formatDate(statusline.created.$date) }}</td>
                   </template>
                 </tr>
               </table>
@@ -126,6 +129,7 @@
 </template>
 <script>
 import axios from "axios";
+//import moment from 'moment';
 
 export default {
   
@@ -148,6 +152,15 @@ export default {
   },
   methods: 
   {
+      formatDate(value) {
+        if (value) {
+          //return moment(String(value)).format('MMMM Do YYYY, hh:mm a');
+          /*var b = value.toString().split(/\D+/);
+          return new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], b[5], b[6]));
+          */
+         return value;
+        }
+      },
       printTicketNumber(id)
       {        
         return id?.substr(0,7);
