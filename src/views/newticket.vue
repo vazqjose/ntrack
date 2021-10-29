@@ -35,7 +35,7 @@
                       <div class="input-group">
                         <select class="form-select" v-model="formData.client_id">
                           <option selected value="">Select a client to assign this service...</option>
-                          <option value='616f4c9ff66c2a496d7e5bd3'>JOSE CRUZ</option>
+                          <option value='6170be1ace938dab7b685232'>JOSE CRUZ</option>
                           
                         </select>                        
                       </div>
@@ -139,10 +139,7 @@
                 }
             },
             addTicket() {
-              console.log(this.formData)
-                 if (!this.formData.client_id) {
-                       this.formData.client_id = '6170be1ace938dab7b685232';
-                     }
+              console.log(this.formData)             
                  axios.post('https://2ktpylu8p5.execute-api.us-east-2.amazonaws.com/dev/api/v1/tickets', this.formData)
                  .then(
                      response => {
