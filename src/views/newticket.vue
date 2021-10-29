@@ -120,7 +120,7 @@
 
                 if (this.formData.description && this.formData.client_id && this.formData.device) {
                     this.addTicket();
-                    console.log('form passed');
+                    console.log('form passed'); 
                     console.log(this.formData);   
                 }
                 this.successMsg = '';
@@ -146,11 +146,7 @@
                  .then(
                      response => {
                          console.log(response),                         
-                         this.successMsg = 'New ticket added successfuly',
-                         this.formData.client_id = '',
-                         this.formData.description = '',
-                         this.formData.device = '',
-                         this.errors = []
+                         this.successMsg = 'New ticket added successfuly';
                          return;
                      })
                  .catch(
